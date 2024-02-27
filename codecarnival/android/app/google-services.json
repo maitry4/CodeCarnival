@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "868652296203",
+    "project_id": "practice-c374e",
+    "storage_bucket": "practice-c374e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868652296203:android:5c6c4f7c5854ed686cbf0e",
+        "android_client_info": {
+          "package_name": "com.example.codecarnival"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwDBKkircSvVAPESMa55HWNwu3rgpPifo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
