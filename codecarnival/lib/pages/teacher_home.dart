@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:codecarnival/components/course_ui.dart';
+import 'package:codecarnival/components/drawer.dart';
 import 'package:codecarnival/components/my_button.dart';
 import 'package:codecarnival/pages/add_course_page.dart';
 import 'package:codecarnival/pages/home_page.dart';
@@ -31,35 +33,38 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
     FirebaseAuth.instance.signOut();
   }
 
-  final List _pages = [
-    const AddCoursePage(),
-    const MyCoursePage(),
-  ];
-  int currentIndex = 0;
-  void goToPage(index) {
-    setState(() {
-      currentIndex = index;
-    });
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => _pages[index],
-      ),
-    ).then((_) {
-      // Call the callback when navigation finishes
-      getData();
-    });
-  }
+  // final List _pages = [
+  //   const AddCoursePage(),
+  //   const MyCoursePage(),
+  // ];
+  // int currentIndex = 0;
+  // void goToPage(index) {
+  //   setState(() {
+  //     currentIndex = index;
+  //   });
+  // Navigator.push(
+  //   context,
+  //   MaterialPageRoute(
+  //     builder: (context) => _pages[index],
+  //   ),
+  // ).then((_) {
+  //   // Call the callback when navigation finishes
+  //   getData();
+  // });
+  // }
 
   void getData() async {
     DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection('Users')
         .doc(username)
         .get();
-         final value = await (snap.data()! as dynamic);
-        setState(() {
-          values = value;
-        });
+    final value = await (snap.data()! as dynamic);
+    setState(() {
+      values = value;
+    });
+    print(
+      values != null ? values!['LecutureCount'].toString() : 'Loading...',
+    );
   }
 
   @override
@@ -69,35 +74,23 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
     getData();
   }
 
+  int LectureCount = 0;
+  void getLectureCount() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(username)
+        .get();
+    setState(() {
+      LectureCount = (snap.data()! as dynamic)["LectureCount"];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Color(0xFF000000),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
-        child: GNav(
-            backgroundColor: Colors.white,
-            gap: 8,
-            // color:  const Color(0xFF76DEAD),
-            activeColor: Colors.red,
-            // tabBackgroundColor: const Color(0xFF76DEAD),
-            padding: const EdgeInsets.all(8),
-            onTabChange: (index) => goToPage(index),
-            tabs: const [
-              GButton(
-                icon: Icons.add,
-                text: "Add Course",
-              ),
-              GButton(
-                icon: Icons.remove_red_eye_sharp,
-                text: "My Courses",
-              ),
-            ]),
-      ),
-      appBar: AppBar(actions: [
-        IconButton(onPressed: signUserOut, icon: const Icon(Icons.logout))
-      ]),
-      body: ListView(
+      drawer: MyDrawer(type:'teacher'),
+      appBar: AppBar(),
+      body: Column(
         children: [
           // user details
           Row(
@@ -114,105 +107,51 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                   values != null ? values!['username'] : 'Loading...',
                   style: TextStyle(color: text_color),
                 ),
-                Text(
-                  values != null ? values!['bio'] : 'Loading...',
-                  style: TextStyle(color: text_color),
-                ),
               ]),
+              //  MyListTile(icon:Icons.book, text:'MY COURSES',),
             ],
           ),
-          Row(children: [
-            Text(
-              "Analytics",
-              style: TextStyle(color: text_color),
-            ),
-          ]),
-          Row(children: [
-            Container(
-                child: Column(
-              children: [
-                Text(
-                  "Total Courses",
-                  style: TextStyle(color: text_color),
-                ),
-                Text(
-                  values != null
-                      ? values!['CourseCount'].toString()
-                      : 'Loading...',
-                  style: TextStyle(color: text_color),
-                ),
-              ],
-            )),
-            SizedBox(
-              width: 10,
-            ),
-            Container(
-                child: Column(
-              children: [
-                Text(
-                  "Total Lectures",
-                  style: TextStyle(color: text_color),
-                ),
-                Text(
-                  "0",
-                  style: TextStyle(color: text_color),
-                ),
-              ],
-            )),
-          ]),
-          Row(children: [
-            Text(
-              "Latest Lecture Notes",
-              style: TextStyle(color: text_color),
-            ),
-          ]),
-          Row(children: [
-            Container(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      // detail (title, time)
-                      Text(
-                        "Title",
-                        style: TextStyle(color: text_color),
-                      ),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      Text(
-                        "time",
-                        style: TextStyle(color: text_color),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      // likes, students enrolled, doubts
-                      Text(
-                        "likes",
-                        style: TextStyle(color: text_color),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "students",
-                        style: TextStyle(color: text_color),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "doubts",
-                        style: TextStyle(color: text_color),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ]),
+
+          Expanded(
+              child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("Courses")
+                      .orderBy("Time", descending: true)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Error: ${snapshot.error}'),
+                      );
+                    }
+
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      return Center(
+                        child: Text('No Classes available.'),
+                      );
+                    }
+                    return ListView.builder(
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        // get message
+                        final course = snapshot.data!.docs[index];
+                        return CourseUi(
+                          CourseName: course['CourseName'],
+                          TeacherEmail: course['TeacherEmail'],
+                          Date: course['Time'],
+                          ID: course.id,
+                          LectureCount: LectureCount,
+                          type:'teacher',
+                        );
+                      },
+                    );
+                  })),
           // ElevatedButton(
           //     child: Text("Pick File"),
           //     onPressed: ()async{

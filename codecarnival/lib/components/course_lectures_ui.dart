@@ -15,18 +15,6 @@ class CourseLecutreUi extends StatefulWidget {
 }
 
 class _CourseLecutreUiState extends State<CourseLecutreUi> {
-  Future<String?> getContentType(String url) async {
-  final response = await http.get(Uri.parse(url));
-  if (response.statusCode == 200) {
-    final contentType = response.headers['content-type'];
-    if (contentType != null) {
-      print("(((((((((())))))))))");
-      print(contentType.split('/').last);
-      return contentType.split('/').last;
-    }
-  }
-  return null;
-}
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +66,9 @@ class _CourseLecutreUiState extends State<CourseLecutreUi> {
                       Text("DownLoad Notes"),
                       IconButton(
                         icon: Icon(Icons.open_in_new),
-                        onPressed: () => launchUrl(Uri.parse(lectureData['FileURL'])),
+                        onPressed: () => 
+                        launchUrl(Uri.parse(lectureData['FileURL'])
+                        ),
                       ),
                     ],
                   ),
@@ -98,9 +88,8 @@ class _CourseLecutreUiState extends State<CourseLecutreUi> {
                     ),
                   ],
                 ),
+                
                 MyButton(onTap: (){}, text: "View Reference"),
-                SizedBox(height: 20,),
-                MyButton(onTap: (){}, text: "Ask Doubt"),
               ],
             );
 

@@ -7,27 +7,30 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-class MyCoursePage extends StatefulWidget {
-  const MyCoursePage({super.key});
+class StudentMyCoursePage extends StatefulWidget {
+  const StudentMyCoursePage({super.key});
 
   @override
-  State<MyCoursePage> createState() => _MyCoursePageState();
+  State<StudentMyCoursePage> createState() => _StudentMyCoursePageState();
 }
 
-class _MyCoursePageState extends State<MyCoursePage> {
+class _StudentMyCoursePageState extends State<StudentMyCoursePage> {
   final username = FirebaseAuth.instance.currentUser != null
       ? FirebaseAuth.instance.currentUser!.email
       : 'something';
+  
   String role = '';
   void getUserType() async {
     DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection('Users')
         .doc(username)
         .get();
-      setState(() {
+    setState(() {
       role = (snap.data()! as dynamic)["Role"];
     });
+    print(username);
   }
+
   int LectureCount = 0;
   void getLectureCount() async {
     DocumentSnapshot snap = await FirebaseFirestore.instance
@@ -38,6 +41,13 @@ class _MyCoursePageState extends State<MyCoursePage> {
       LectureCount = (snap.data()! as dynamic)["LectureCount"];
     });
   }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getLectureCount();
+    getUserType();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +56,9 @@ class _MyCoursePageState extends State<MyCoursePage> {
       body: Column(
         children: [
           Expanded(
-            child: StreamBuilder(
+            child: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection("Courses")
-                  // .where('TeacherEmail', isEqualTo: username)
-                  .orderBy("Time", descending: true)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -67,22 +75,28 @@ class _MyCoursePageState extends State<MyCoursePage> {
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                   return Center(
-                    child: Text('You Haven\'t Created Any Classes Yet.'),
+                    child: Text('You Haven\'t Enrolled In Any Classes Yet.'),
                   );
                 }
 
+                final myCourses = snapshot.data!.docs
+                    .where((doc) => doc['Students'].contains(username))
+                    .toList();
+
+                print(myCourses); // This will print the filtered courses
+
                 return ListView.builder(
-                  itemCount: snapshot.data!.docs.length,
+                  itemCount: myCourses.length,
                   itemBuilder: (context, index) {
-                    // get message
-                    final course = snapshot.data!.docs[index];
+                    final course = myCourses[index];
+                    print("username");
                     return CourseUi(
                       CourseName: course['CourseName'],
                       TeacherEmail: course['TeacherEmail'],
                       Date: course['Time'],
                       ID: course.id,
                       LectureCount: LectureCount,
-                      type: role,
+                      type: 'student',
                     );
                   },
                 );

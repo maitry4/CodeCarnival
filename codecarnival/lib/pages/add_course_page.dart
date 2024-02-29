@@ -32,7 +32,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
           context: context,
           builder: (context) {
             return const AlertDialog(
-              content: Text("Course Name Can't Be Empty!", style:TextStyle(fontSize: 20)),
+              content: Text("Class Name Can't Be Empty!", style:TextStyle(fontSize: 20)),
             );
           },
         );
@@ -46,7 +46,6 @@ class _AddCoursePageState extends State<AddCoursePage> {
       'Time':formatDate(date),
       'Students':[],
       'CourseName':courseController.text,
-      'LectureCount':0,
     });
     // clear the text field
     setState(() {
@@ -60,13 +59,10 @@ class _AddCoursePageState extends State<AddCoursePage> {
     firestore.collection('Users').doc(username).update({
       'CourseCount':courseCount,
     });
-    showDialog(
-          context: context,
-          builder: (context) =>const AlertDialog(
-              content: Text("Course Created!", style:TextStyle(fontSize: 20),),
-            ),
-          
-        );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("Class Created"),
+              duration: Duration(seconds: 2),
+            ));
   }
 
   
@@ -78,7 +74,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          MyTextField(controller: courseController, hintText: "Enter Course Name", obscureText: false),
+          MyTextField(controller: courseController, hintText: "Enter Class Name", obscureText: false),
           const SizedBox(height: 10,),
           MyButton(onTap: createCourse, text: "Add a New Class",),
         ],

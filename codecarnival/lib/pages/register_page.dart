@@ -73,6 +73,8 @@ class _RegisterPageState extends State<RegisterPage> {
             'userHasCompletedOnboarding': false,
             'Role': selectedValue.first,
             'CourseCount':0,
+            'LectureCount':0,
+            'Courses': [],
           });
 
           Navigator.pop(context);
