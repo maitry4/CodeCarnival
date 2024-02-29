@@ -3,6 +3,7 @@ import 'package:codecarnival/pages/auth_page.dart';
 import 'package:codecarnival/pages/home_page.dart';
 import 'package:codecarnival/pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -10,7 +11,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(MyApp(),);
 }
 
 class MyApp extends StatelessWidget {

@@ -70,12 +70,9 @@ class _RegisterPageState extends State<RegisterPage> {
               .set({
             'username': emailController.text.split('@')[0],
             'bio': 'empty bio',
-            'isExpert': false,
-            'isIndustry': false,
-            'followers': [],
-            'following': [],
             'userHasCompletedOnboarding': false,
             'Role': selectedValue.first,
+            'CourseCount':0,
           });
 
           Navigator.pop(context);
