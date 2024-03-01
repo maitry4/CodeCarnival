@@ -74,7 +74,10 @@ class _AddCoursePageState extends State<AddCoursePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          MyTextField(controller: courseController, hintText: "Enter Class Name", obscureText: false),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: MyTextField(controller: courseController, hintText: "Enter Class Name", obscureText: false),
+          ),
           const SizedBox(height: 10,),
           MyButton(onTap: createCourse, text: "Add a New Class",),
         ],

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:codecarnival/components/list_tile.dart';
+import 'package:codecarnival/pages/ChatBot.dart';
 import 'package:codecarnival/pages/add_course_page.dart';
 import 'package:codecarnival/pages/my_course_page.dart';
 import 'package:codecarnival/pages/student_my_course_page.dart';
@@ -95,8 +96,20 @@ class _MyDrawerState extends State<MyDrawer> {
             );
           },
         ),
+        MyListTile(
+          icon: Icons.question_answer,
+          text: 'Ask Doubt',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Chatbot(),
+              ),
+            );
+          },
+        ),
         SizedBox(
-          height: 450,
+          height: 350,
         ),
         IconButton(onPressed: signUserOut, icon: const Icon(Icons.logout))
       ],

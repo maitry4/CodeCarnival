@@ -162,23 +162,36 @@ class _AddLecturePageState extends State<AddLecturePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          MyTextField(
-              controller: lecturetitleController,
-              hintText: "Provide Lecture Title",
-              obscureText: false),
-          MyTextField(
-              controller: lecutreDescriptionController,
-              hintText: "Provide a meaningful Lecture Description",
-              obscureText: false),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: MyTextField(
+                controller: lecturetitleController,
+                hintText: "Provide Lecture Title",
+                obscureText: false),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: MyTextField(
+                controller: lecutreDescriptionController,
+                hintText: "Provide a meaningful Lecture Description",
+                obscureText: false),
+          ),
           const SizedBox(
             height: 10,
           ),
           ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            ),
             child: Text("Upload Notes"),
             onPressed: () async {
               FilePickerResult? result = await FilePicker.platform.pickFiles();
               uploadFileToStorage(result);
             },
+          ),
+          const SizedBox(
+            height: 10,
           ),
           MyButton(
             onTap: () {
@@ -189,9 +202,9 @@ class _AddLecturePageState extends State<AddLecturePage> {
               // pop the box
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text("Lecture created successfully"),
-              duration: Duration(seconds: 2),
-            ));
+                content: Text("Lecture created successfully"),
+                duration: Duration(seconds: 2),
+              ));
             },
             text: "Add a New Lecture",
           ),

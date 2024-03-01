@@ -5,6 +5,7 @@ import 'package:codecarnival/components/course_ui.dart';
 import 'package:codecarnival/components/drawer.dart';
 import 'package:codecarnival/components/my_button.dart';
 import 'package:codecarnival/components/tile.dart';
+import 'package:codecarnival/pages/SearchPage.dart';
 import 'package:codecarnival/pages/add_course_page.dart';
 import 'package:codecarnival/pages/home_page.dart';
 import 'package:codecarnival/pages/login_page.dart';
@@ -90,37 +91,50 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(type:'teacher'),
+      drawer: MyDrawer(type: 'teacher'),
       appBar: AppBar(),
       body: Column(
         children: [
           // user details
           Padding(
-              padding: const EdgeInsets.symmetric (vertical: 10.0, horizontal: 13),
-              child: Text(
+            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 13),
+            child: Text(
               "Discover your class and join the journey today!",
-              style: GoogleFonts.bebasNeue( fontSize:47, ),
-             
+              style: GoogleFonts.bebasNeue(
+                fontSize: 47,
               ),
-            ), 
-            SizedBox(height: 25,),
-            // Search Bar
-         Padding(
-           padding: const EdgeInsets.symmetric(horizontal:25.0),
-           child: TextField(
-             decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              hintText: "Search your Classes",
-               focusedBorder: OutlineInputBorder(
-               borderSide: BorderSide (color: Colors.grey.shade600), //0₁
-                ), 
-               enabledBorder: OutlineInputBorder(
-               borderSide: BorderSide (color: Colors.grey.shade600)
-               ),
-               ),
+            ),
+          ),
+          SizedBox(
+            height: 25,
+          ),
+
+          MyButton(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SearchPage(),
+                    ));
+              },
+              text: "Search"),
+          // Search Bar
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: TextField(
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search),
+                hintText: "Search your Classes",
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey.shade600), //0₁
                 ),
-         ),
-        SizedBox(height:25),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade600)),
+              ),
+              onSubmitted: (string) {},
+            ),
+          ),
+          SizedBox(height: 25),
           Expanded(
               child: StreamBuilder(
                   stream: FirebaseFirestore.instance
@@ -146,21 +160,21 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                       );
                     }
                     return ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          // get message
-                          final course = snapshot.data!.docs[index];
-                          return CoffeeTile(
-                            CourseName: course['CourseName'],
-                            TeacherEmail: course['TeacherEmail'],
-                            Date: course['Time'],
-                            ID: course.id,
-                            LectureCount: LectureCount,
-                            type:'teacher',
-                          );
-                        },
-                      );
+                      scrollDirection: Axis.horizontal,
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        // get message
+                        final course = snapshot.data!.docs[index];
+                        return CoffeeTile(
+                          CourseName: course['CourseName'],
+                          TeacherEmail: course['TeacherEmail'],
+                          Date: course['Time'],
+                          ID: course.id,
+                          LectureCount: LectureCount,
+                          type: 'teacher',
+                        );
+                      },
+                    );
                   })),
           // ElevatedButton(
           //     child: Text("Pick File"),
