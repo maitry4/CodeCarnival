@@ -21,9 +21,10 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
 
   void invalidCredential(BuildContext context) {
-    showDialog(context: context, builder: (context) {
-      return const AlertDialog(title: Text("Invalid Email or Password"));
-    });
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Invalid Email or Password"),
+        duration: Duration(seconds: 2),
+      ));
   }
   // sign user in method
   void signUserIn() async {

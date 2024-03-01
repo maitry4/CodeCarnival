@@ -86,7 +86,13 @@ class _StudentMyCoursePageState extends State<StudentMyCoursePage> {
 
                 print(myCourses); // This will print the filtered courses
 
-                return ListView.builder(
+                return GridView.builder(
+                  padding: EdgeInsets.only(right: 23),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(  
+                  crossAxisCount: 1,  
+                  crossAxisSpacing: 4.0,  
+                  mainAxisSpacing: 4.0  
+              ),  
                   itemCount: myCourses.length,
                   itemBuilder: (context, index) {
                     final course = myCourses[index];

@@ -64,7 +64,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
       body: Column(
         children: [
           Padding(
-              padding: const EdgeInsets.symmetric (vertical: 10.0),
+              padding: const EdgeInsets.symmetric (vertical: 10.0, horizontal:13),
               child: Text(
               "Discover your class and join the journey today!",
               style: GoogleFonts.bebasNeue( fontSize:47, ),

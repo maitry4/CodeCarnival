@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:codecarnival/components/course_ui.dart';
 import 'package:codecarnival/components/my_button.dart';
+import 'package:codecarnival/components/tile.dart';
 import 'package:codecarnival/helper/helper_method.dart';
 import 'package:codecarnival/pages/teacher_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -71,12 +72,18 @@ class _MyCoursePageState extends State<MyCoursePage> {
                   );
                 }
 
-                return ListView.builder(
+                return GridView.builder(
+                  padding: EdgeInsets.only(right: 23),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(  
+                  crossAxisCount: 1,  
+                  crossAxisSpacing: 4.0,  
+                  mainAxisSpacing: 4.0  
+              ), 
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     // get message
                     final course = snapshot.data!.docs[index];
-                    return CourseUi(
+                    return CoffeeTile(
                       CourseName: course['CourseName'],
                       TeacherEmail: course['TeacherEmail'],
                       Date: course['Time'],

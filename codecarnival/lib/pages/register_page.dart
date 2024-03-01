@@ -112,22 +112,26 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void invalidCredential(error) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          if (error == 'invalid-credential') {
-            return const AlertDialog(
-                title: Text("Incorrect Email or Password"));
-          } else {
-            return AlertDialog(title: Text(error));
-          }
-        });
+      if (error == 'invalid-credential') {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Class Deleted Successfully"),
+        duration: Duration(seconds: 2),
+      ));
+      }
+      else{
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(error),
+        duration: Duration(seconds: 2),
+      ));
+      }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.grey,
+      // backgroundColor: Colors.black,
       body: SafeArea(
         child: Center(
           child: ListView(
