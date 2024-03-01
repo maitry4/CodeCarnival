@@ -24,14 +24,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
       if (list.isEmpty) {
         // User not found
-        showDialog(
-          context: context,
-          builder: (context) {
-            return const AlertDialog(
-              content: Text("Email address not found. Please check the email and try again."),
-            );
-          },
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Email address not found. Please check the email and try again."),
+        duration: Duration(seconds: 2),
+      ));
         return; // Exit the function
       }
 
@@ -39,25 +35,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text.trim());
 
       // Wait for the sendPasswordResetEmail operation to complete before showing the dialog
-    await showDialog(
-        context: context,
-        builder: (context) {
-          return const AlertDialog(
-            content: Text("Password Reset Link Sent. Check Your Mail!!"),
-          );
-        },
-      );
+      await ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Password Reset Link Sent. Check Your Mail!!"),
+        duration: Duration(seconds: 2),
+      ));
     } on FirebaseAuthException catch (e) {
       print("****************");
       print(e);
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Text(e.message.toString()),
-          );
-        },
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.message.toString()),
+        duration: Duration(seconds: 2),
+      ));
     }
   }
   @override
@@ -78,10 +66,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           ),
 
           // email textfield
-            MyTextField(
-              controller: emailController,
-              hintText: 'Email',
-              obscureText: false,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: MyTextField(
+                controller: emailController,
+                hintText: 'Email',
+                obscureText: false,
+              ),
             ),
             
             const SizedBox(height: 25),

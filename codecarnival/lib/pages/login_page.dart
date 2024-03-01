@@ -92,19 +92,25 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 25),
 
               // email textfield
-              MyTextField(
-                controller: emailController,
-                hintText: 'Email',
-                obscureText: false,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: MyTextField(
+                  controller: emailController,
+                  hintText: 'Email',
+                  obscureText: false,
+                ),
               ),
 
               const SizedBox(height: 10),
 
               // password textfield
-              MyTextField(
-                controller: passwordController,
-                hintText: 'Password',
-                obscureText: true,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: MyTextField(
+                  controller: passwordController,
+                  hintText: 'Password',
+                  obscureText: true,
+                ),
               ),
 
               const SizedBox(height: 10),
@@ -181,7 +187,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: const Text(
                       'Register now',
                       style: TextStyle(
-                        color: Color(0xFF76DEAD),
+                        color: Color(0xFF014a97),
                         fontWeight: FontWeight.bold,
                       ),
                     ),

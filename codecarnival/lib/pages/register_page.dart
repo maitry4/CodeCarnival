@@ -127,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      // backgroundColor: Colors.grey,
       body: SafeArea(
         child: Center(
           child: ListView(
@@ -156,16 +156,19 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(height: 25),
 
               // email textfield
-              MyTextField(
-                controller: emailController,
-                hintText: 'Email',
-                obscureText: false,
+              Padding(
+                padding: const EdgeInsets.only(left:18.0, right:18.0, top:18.0),
+                child: MyTextField(
+                  controller: emailController,
+                  hintText: 'Email',
+                  obscureText: false,
+                ),
               ),
 
               const SizedBox(height: 10),
 
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(18.0),
                 child: SegmentedButton(
                   emptySelectionAllowed: true,
                   onSelectionChanged: (newValue) {
@@ -186,19 +189,25 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(height: 10),
 
               // password textfield
-              MyTextField(
-                controller: passwordController,
-                hintText: 'Password',
-                obscureText: true,
+              Padding(
+                padding: const EdgeInsets.only(left:18.0, right:18.0),
+                child: MyTextField(
+                  controller: passwordController,
+                  hintText: 'Password',
+                  obscureText: true,
+                ),
               ),
 
               const SizedBox(height: 10),
 
               // confirm password textfield
-              MyTextField(
-                controller: confirmpasswordController,
-                hintText: 'Confirm Password',
-                obscureText: true,
+              Padding(
+                padding: const EdgeInsets.only(left:18.0, right:18.0, top:18.0),
+                child: MyTextField(
+                  controller: confirmpasswordController,
+                  hintText: 'Confirm Password',
+                  obscureText: true,
+                ),
               ),
 
               const SizedBox(height: 25),
@@ -232,7 +241,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
 
               SizedBox(
-                height: 50,
+                height: 30,
               ),
               // not a member? register now
               Row(
@@ -248,7 +257,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: const Text(
                       'Login now',
                       style: TextStyle(
-                        color: Color(0xFF76DEAD),
+                        color: Color(0xFF014a97),
                         fontWeight: FontWeight.bold,
                       ),
                     ),

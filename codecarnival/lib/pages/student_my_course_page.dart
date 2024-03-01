@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:codecarnival/components/course_ui.dart';
 import 'package:codecarnival/components/my_button.dart';
+import 'package:codecarnival/components/tile.dart';
 import 'package:codecarnival/helper/helper_method.dart';
 import 'package:codecarnival/pages/teacher_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -90,7 +91,7 @@ class _StudentMyCoursePageState extends State<StudentMyCoursePage> {
                   itemBuilder: (context, index) {
                     final course = myCourses[index];
                     print("username");
-                    return CourseUi(
+                    return CoffeeTile(
                       CourseName: course['CourseName'],
                       TeacherEmail: course['TeacherEmail'],
                       Date: course['Time'],

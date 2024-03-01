@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:codecarnival/components/course_ui.dart';
 import 'package:codecarnival/components/drawer.dart';
+import 'package:codecarnival/components/tile.dart';
 import 'package:codecarnival/pages/teacher_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class StudentHomePage extends StatefulWidget {
@@ -61,26 +63,32 @@ class _StudentHomePageState extends State<StudentHomePage> {
       appBar: AppBar(),
       body: Column(
         children: [
-          // user details
-          Row(
-            // profile
-            children: [
-              IconButton(
-                icon: Icon(Icons.person),
-                onPressed: () {},
-                color: text_color,
+          Padding(
+              padding: const EdgeInsets.symmetric (vertical: 10.0),
+              child: Text(
+              "Discover your class and join the journey today!",
+              style: GoogleFonts.bebasNeue( fontSize:47, ),
+             
               ),
-              // name & description
-              Column(children: [
-                Text(
-                  values != null ? values!['username'] : 'Loading...',
-                  style: TextStyle(color: text_color),
+            ), 
+            SizedBox(height: 25,),
+            // Search Bar
+         Padding(
+           padding: const EdgeInsets.symmetric(horizontal:25.0),
+           child: TextField(
+             decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              hintText: "Search your Classes",
+               focusedBorder: OutlineInputBorder(
+               borderSide: BorderSide (color: Colors.grey.shade600), //0₁
+                ), 
+               enabledBorder: OutlineInputBorder(
+               borderSide: BorderSide (color: Colors.grey.shade600)
+               ),
+               ),
                 ),
-              ]),
-              //  MyListTile(icon:Icons.book, text:'MY COURSES',),
-            ],
-          ),
-
+         ),
+        SizedBox(height:25),
           Expanded(
               child: StreamBuilder(
                   stream: FirebaseFirestore.instance
@@ -106,11 +114,12 @@ class _StudentHomePageState extends State<StudentHomePage> {
                       );
                     }
                     return ListView.builder(
+                      scrollDirection: Axis.horizontal,
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
                         // get message
                         final course = snapshot.data!.docs[index];
-                        return CourseUi(
+                        return CoffeeTile(
                           CourseName: course['CourseName'],
                           TeacherEmail: course['TeacherEmail'],
                           Date: course['Time'],
