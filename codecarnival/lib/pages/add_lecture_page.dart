@@ -155,8 +155,16 @@ Future<String> fetchData(String message) async {
   void addLecture() async {
     print("Inside addLecture: ");
     print(url);
-    
-    final res= await fetchData("Can you provide 3 reference websites for this lecture?Title: ${lecturetitleController.text} Description: ${lectureDescriptionController.text}Provide them in this format: FORMAT: 1. <URL> in new line 2. <URL> in new line 3. <URL>");
+    if(lecturetitleController.text.isEmpty ||
+      lectureDescriptionController.text.isEmpty || url!.isEmpty){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("Please fill in all fields and upload a file"),
+      duration: Duration(seconds: 2),
+    ));
+    return; 
+    }
+    else
+    {final res= await fetchData("Can you provide 3 reference websites for this lecture?Title: ${lecturetitleController.text} Description: ${lectureDescriptionController.text}Provide them in this format: FORMAT: 1. <URL> in new line 2. <URL> in new line 3. <URL>");
     print("****");
     print(lecturetitleController.text);
     print(lectureDescriptionController.text);
@@ -174,6 +182,11 @@ Future<String> fetchData(String message) async {
       "Reference": res,
       "UploadTime": Timestamp.now(), //format this later
     });
+    Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Lecture created successfully"),
+                duration: Duration(seconds: 2),
+              ));}
   }
 
   @override
@@ -221,11 +234,7 @@ Future<String> fetchData(String message) async {
               // lecturetitleController.clear();
               // lectureDescriptionController.clear();
               // pop the box
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Lecture created successfully"),
-                duration: Duration(seconds: 2),
-              ));
+              
             },
             text: "Add a New Lecture",
           ),

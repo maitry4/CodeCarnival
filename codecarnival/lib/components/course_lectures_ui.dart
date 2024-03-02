@@ -87,17 +87,17 @@ class _CourseLecutreUiState extends State<CourseLecutreUi> {
               var lectureData = lecture.data() as Map<String, dynamic>;
               // Build your UI here using lectureData
               return Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(top:18.0, left:18.0, right:18.0, bottom:10.0),
                 child: Container(
                   padding: EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     color: Color(0xffedeee9),
                     borderRadius: BorderRadius.circular(12),
-                    //           image: DecorationImage(
-                    //   image: AssetImage("lib/images/lecture_background6.jpg"),
-                    //   fit: BoxFit.cover,
-                    //   opacity: 0.35,
-                    // ),
+                              image: DecorationImage(
+                      image: AssetImage("lib/images/lecture_background1.jpg"),
+                      fit: BoxFit.cover,
+                      opacity: 0.45,
+                    ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,6 +109,7 @@ class _CourseLecutreUiState extends State<CourseLecutreUi> {
                             border: Border.all(
                               width: 2,
                               color: Color(0xFF014a97),
+                              
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -124,7 +125,7 @@ class _CourseLecutreUiState extends State<CourseLecutreUi> {
                             padding: EdgeInsets.all(8.0),
                             
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: const Color.fromARGB(73, 255, 255, 255),
                               border: Border.all(
                                 width: 2,
                                 color: Color(0xFF014a97),
