@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:codecarnival/components/my_button.dart';
-import 'package:codecarnival/helper/helper_method.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -63,7 +61,7 @@ class _CourseLecutreUiState extends State<CourseLecutreUi> {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -75,7 +73,7 @@ class _CourseLecutreUiState extends State<CourseLecutreUi> {
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(
+            return const Center(
               child: Text('No lectures available.'),
             );
           }
@@ -89,11 +87,11 @@ class _CourseLecutreUiState extends State<CourseLecutreUi> {
               return Padding(
                 padding: const EdgeInsets.only(top:18.0, left:18.0, right:18.0, bottom:10.0),
                 child: Container(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
-                    color: Color(0xffedeee9),
+                    color: const Color(0xffedeee9),
                     borderRadius: BorderRadius.circular(12),
-                              image: DecorationImage(
+                              image: const DecorationImage(
                       image: AssetImage("lib/images/lecture_background1.jpg"),
                       fit: BoxFit.cover,
                       opacity: 0.45,
@@ -104,31 +102,31 @@ class _CourseLecutreUiState extends State<CourseLecutreUi> {
                     children: [
                       // title
                       Container(
-                          padding: EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8.0),
                           decoration: BoxDecoration(
                             border: Border.all(
                               width: 2,
-                              color: Color(0xFF014a97),
+                              color: const Color(0xFF014a97),
                               
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
                               'LectureTitle:- ${lectureData['LectureTitle']}                   ',
-                              style: TextStyle(fontSize: 20))),
+                              style: const TextStyle(fontSize: 20))),
                       // Text(lectureData['LectureTitle']),
                       Text('Description:- ${lectureData['Description']}',
                           style: TextStyle(color: Colors.grey[800])),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                            padding: EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(8.0),
                             
                             decoration: BoxDecoration(
                               color: const Color.fromARGB(73, 255, 255, 255),
                               border: Border.all(
                                 width: 2,
-                                color: Color(0xFF014a97),
+                                color: const Color(0xFF014a97),
                               ),
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -138,7 +136,7 @@ class _CourseLecutreUiState extends State<CourseLecutreUi> {
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return CircularProgressIndicator(); // Return loading indicator while fetching data
+                                  return const CircularProgressIndicator(); // Return loading indicator while fetching data
                                 } else if (snapshot.hasError) {
                                   return Text('Error: ${snapshot.error}');
                                 } else {
@@ -150,7 +148,7 @@ class _CourseLecutreUiState extends State<CourseLecutreUi> {
                             )),
                       ),
 
-                      Text("References", style: TextStyle(fontSize: 19)),
+                      const Text("References", style: TextStyle(fontSize: 19)),
                       GestureDetector(
                           onTap: () {
                             final x = lectureData['Reference'].split('\n');
@@ -188,9 +186,9 @@ class _CourseLecutreUiState extends State<CourseLecutreUi> {
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Row(
                           children: [
-                            Text("DownLoad Notes"),
+                            const Text("DownLoad Notes"),
                             IconButton(
-                              icon: Icon(Icons.open_in_new),
+                              icon: const Icon(Icons.open_in_new),
                               onPressed: () =>
                                   launchUrl(Uri.parse(lectureData['FileURL'])),
                             ),

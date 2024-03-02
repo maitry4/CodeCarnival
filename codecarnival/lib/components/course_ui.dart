@@ -1,11 +1,7 @@
-import 'dart:io';
 import 'package:codecarnival/components/course_lectures_ui.dart';
 import 'package:codecarnival/pages/add_lecture_page.dart';
-import 'package:codecarnival/pages/teacher_home.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:codecarnival/components/my_button.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +41,7 @@ class _CourseUiState extends State<CourseUi> {
   showDialog(
     context: context,
     barrierDismissible: false, // Prevent dialog dismissal
-    builder: (context) => AlertDialog(
+    builder: (context) => const AlertDialog(
       backgroundColor: Colors.white,
       title: Text("Delete Course"),
       content: Column(
@@ -65,7 +61,7 @@ class _CourseUiState extends State<CourseUi> {
   );
 
   // Perform deletion asynchronously
-  Future.delayed(Duration(seconds: 1), () async {
+  Future.delayed(const Duration(seconds: 1), () async {
     // Delete the comments
     final lectureDoc = await FirebaseFirestore.instance
         .collection("Courses")
@@ -116,7 +112,7 @@ class _CourseUiState extends State<CourseUi> {
     // Dismiss the dialog
   });
     Navigator.pop(context);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Class Deleted Successfully"),
         duration: Duration(seconds: 2),
       ));
@@ -161,7 +157,7 @@ class _CourseUiState extends State<CourseUi> {
           .update({
         'Courses': FieldValue.arrayUnion([widget.ID])
       });
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("You are enrolled in this class!"),
         duration: Duration(seconds: 2),
       ));
@@ -178,7 +174,7 @@ class _CourseUiState extends State<CourseUi> {
           .update({
         'Courses': FieldValue.arrayRemove([widget.ID]),
       });
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("You are unenrolled from this class."),
         duration: Duration(seconds: 2),
       ));
@@ -188,7 +184,7 @@ class _CourseUiState extends State<CourseUi> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Column(children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -202,14 +198,14 @@ class _CourseUiState extends State<CourseUi> {
             ),
             if (widget.TeacherEmail == username)
               GestureDetector(
-                  child: Icon(
+                  onTap: deleteCourse,
+                  child: const Icon(
                     Icons.delete,
-                  ),
-                  onTap: deleteCourse),
+                  )),
           ],
         ),
         MyButton(onTap: goToLectures, text: "See Lectures"),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         if(widget.type == 'student')
         FutureBuilder<bool>(
           future: isEnrolled(),
@@ -224,7 +220,7 @@ class _CourseUiState extends State<CourseUi> {
               }
             } else {
               // Loading state
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             }
           },
         ),

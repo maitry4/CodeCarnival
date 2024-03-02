@@ -24,7 +24,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
       if (list.isEmpty) {
         // User not found
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Email address not found. Please check the email and try again."),
         duration: Duration(seconds: 2),
       ));
@@ -35,7 +35,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text.trim());
 
       // Wait for the sendPasswordResetEmail operation to complete before showing the dialog
-      await ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Password Reset Link Sent. Check Your Mail!!"),
         duration: Duration(seconds: 2),
       ));
@@ -44,7 +44,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(e.message.toString()),
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
       ));
     }
   }

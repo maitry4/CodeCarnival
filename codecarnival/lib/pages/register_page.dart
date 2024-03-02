@@ -21,8 +21,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final confirmpasswordController = TextEditingController();
   Set<dynamic> selectedValue = {}; // Example: empty set for initial selection
   List<ButtonSegment> segments = [
-    ButtonSegment(label: Text('Student'), value: 'Student'),
-    ButtonSegment(label: Text('Teacher'), value: 'Teacher'),
+    const ButtonSegment(label: Text('Student'), value: 'Student'),
+    const ButtonSegment(label: Text('Teacher'), value: 'Teacher'),
   ];
 
   @override
@@ -114,7 +114,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void invalidCredential(error) {
       if (error == 'invalid-credential') {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text("Class Deleted Successfully"),
         duration: Duration(seconds: 2),
       ));
@@ -123,7 +123,7 @@ class _RegisterPageState extends State<RegisterPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(error),
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
       ));
       }
   }
@@ -244,7 +244,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
 
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               // not a member? register now

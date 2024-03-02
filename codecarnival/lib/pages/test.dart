@@ -1,9 +1,6 @@
-import 'package:codecarnival/components/tile.dart';
-import 'package:codecarnival/pages/teacher_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 
 class StudentHomePage extends StatefulWidget {
   const StudentHomePage({super.key});
@@ -20,7 +17,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
   Widget build(BuildContext context) {
 
     final username = FirebaseAuth.instance.currentUser != null ? FirebaseAuth.instance.currentUser!.email : 'something';
-  final List _pages = [
+  final List pages = [
     const StudentHomePage(),
   ];
    int currentIndex = 0;
@@ -30,7 +27,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
     });
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => _pages[index],
+      MaterialPageRoute(builder: (context) => pages[index],
       ),
     );
   }
@@ -40,7 +37,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
 appBar: AppBar(
   elevation: 0,
   backgroundColor: Colors.transparent,
-  leading: Icon(Icons.menu),
+  leading: const Icon(Icons.menu),
 ),
 // bottomNavigationBar: BottomNavigationBar(
 // items: [
@@ -64,13 +61,13 @@ body: Column (children: [
              
               ),
             ), 
-            SizedBox(height: 25,),
+            const SizedBox(height: 25,),
             // Search Bar
          Padding(
            padding: const EdgeInsets.symmetric(horizontal:25.0),
            child: TextField(
              decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search),
+              prefixIcon: const Icon(Icons.search),
               hintText: "Search your Classes",
                focusedBorder: OutlineInputBorder(
                borderSide: BorderSide (color: Colors.grey.shade600), //0₁
@@ -82,7 +79,7 @@ body: Column (children: [
                 ),
          ),
 
-         SizedBox(height:25),
+         const SizedBox(height:25),
 
         //  // horizontal listview of coffee types
         //      Container(
@@ -91,7 +88,7 @@ body: Column (children: [
         //              scrollDirection: Axis.horizontal,
         //                 children:[
                          // horizontal listview of
-                       Container(
+                       SizedBox(
                            height: 50,
                            //color: Colors.yellow,
                                  child: ListView(
@@ -109,7 +106,7 @@ body: Column (children: [
          Expanded (
           child: ListView(
           scrollDirection: Axis.horizontal,
-           children: [
+           children: const [
               //  CoffeeTile(),
               //  CoffeeTile(),
               //  CoffeeTile(),

@@ -1,12 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:codecarnival/components/course_ui.dart';
-import 'package:codecarnival/components/my_button.dart';
 import 'package:codecarnival/components/tile.dart';
-import 'package:codecarnival/helper/helper_method.dart';
-import 'package:codecarnival/pages/teacher_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 
 class MyCoursePage extends StatefulWidget {
   const MyCoursePage({super.key});
@@ -55,7 +50,7 @@ class _MyCoursePageState extends State<MyCoursePage> {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
@@ -67,14 +62,14 @@ class _MyCoursePageState extends State<MyCoursePage> {
                 }
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(
+                  return const Center(
                     child: Text('You Haven\'t Created Any Classes Yet.'),
                   );
                 }
 
                 return GridView.builder(
-                  padding: EdgeInsets.only(right: 23),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(  
+                  padding: const EdgeInsets.only(right: 23),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(  
                   crossAxisCount: 1,  
                   crossAxisSpacing: 4.0,  
                   mainAxisSpacing: 4.0  

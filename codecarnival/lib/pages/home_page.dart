@@ -39,10 +39,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     if(Role == 'Student') {
-              return StudentHomePage();
+              return const StudentHomePage();
             }
         else {
-              return TeacherHomePage();
+              return const TeacherHomePage();
         }
 
   }

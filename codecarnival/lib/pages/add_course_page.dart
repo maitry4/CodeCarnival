@@ -2,11 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:codecarnival/components/my_button.dart';
 import 'package:codecarnival/components/my_textfield.dart';
 import 'package:codecarnival/helper/helper_method.dart';
-import 'package:codecarnival/pages/my_course_page.dart';
 import 'package:codecarnival/pages/teacher_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 
 class AddCoursePage extends StatefulWidget {
   const AddCoursePage({super.key});
@@ -22,7 +20,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TeacherHomePage(),
+        builder: (context) => const TeacherHomePage(),
       ),
     );
   }
@@ -59,7 +57,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
     firestore.collection('Users').doc(username).update({
       'CourseCount':courseCount,
     });
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("Class Created"),
               duration: Duration(seconds: 2),
             ));

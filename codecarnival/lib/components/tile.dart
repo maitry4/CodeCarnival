@@ -53,13 +53,13 @@ class _CoffeeTileState extends State<CoffeeTile> {
         title: Text("Delete Course"),
         content: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: const [
             CircularProgressIndicator(), // Circular progress indicator
             SizedBox(height: 20.0),
             Text("Deleting course..."),
           ],
         ),
-        actions: [
+        actions: const [
           // HIDE BUTTONS WHILE DELETING
           SizedBox.shrink(),
           SizedBox.shrink(),

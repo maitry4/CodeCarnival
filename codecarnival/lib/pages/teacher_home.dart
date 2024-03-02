@@ -1,22 +1,11 @@
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:codecarnival/components/course_ui.dart';
 import 'package:codecarnival/components/drawer.dart';
-import 'package:codecarnival/components/my_button.dart';
 import 'package:codecarnival/components/tile.dart';
 import 'package:codecarnival/pages/SearchPage.dart';
-import 'package:codecarnival/pages/add_course_page.dart';
-import 'package:codecarnival/pages/home_page.dart';
-import 'package:codecarnival/pages/login_page.dart';
-import 'package:codecarnival/pages/student_home.dart';
-import 'package:codecarnival/pages/my_course_page.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:provider/provider.dart';
 
 class TeacherHomePage extends StatefulWidget {
   const TeacherHomePage({super.key});
@@ -91,7 +80,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(type: 'teacher'),
+      drawer: const MyDrawer(type: 'teacher'),
       appBar: AppBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -102,7 +91,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                     ));
         },
         foregroundColor: Colors.white,
-        backgroundColor: Color(0xFF014a97),
+        backgroundColor: const Color(0xFF014a97),
         child: const Icon(Icons.search),
       ),
       body: Column(
@@ -117,7 +106,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 25,
           ),
 
@@ -156,7 +145,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     }
@@ -168,7 +157,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                     }
 
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                      return Center(
+                      return const Center(
                         child: Text('No Classes available.'),
                       );
                     }

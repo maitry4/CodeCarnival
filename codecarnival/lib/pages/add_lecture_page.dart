@@ -8,13 +8,8 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:codecarnival/components/my_button.dart';
 import 'package:codecarnival/components/my_textfield.dart';
-import 'package:codecarnival/helper/helper_method.dart';
-import 'package:codecarnival/pages/my_course_page.dart';
-import 'package:codecarnival/pages/teacher_home.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 
 class AddLecturePage extends StatefulWidget {
   final String ID;
@@ -40,10 +35,10 @@ class _AddLecturePageState extends State<AddLecturePage> {
   final lectureDescriptionController = TextEditingController();
   String? url = "";
   
-  void uploadFileToStorage(res_file) async {
+  void uploadFileToStorage(resFile) async {
     // Show circular progress indicator
-    if (res_file != null) {
-      File file = File(res_file.files.single.path!);
+    if (resFile != null) {
+      File file = File(resFile.files.single.path!);
       String fileName = file.path;
       print(fileName); // Get the file name
 
@@ -54,8 +49,8 @@ class _AddLecturePageState extends State<AddLecturePage> {
         builder: (BuildContext context) {
           return Dialog(
             child: Container(
-              padding: EdgeInsets.all(20.0),
-              child: Column(
+              padding: const EdgeInsets.all(20.0),
+              child: const Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CircularProgressIndicator(),
@@ -87,7 +82,7 @@ class _AddLecturePageState extends State<AddLecturePage> {
             Navigator.of(context).pop();
 
             // Update UI with download URL
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("File successfully uploaded"),
               duration: Duration(seconds: 2),
             ));
@@ -103,7 +98,7 @@ class _AddLecturePageState extends State<AddLecturePage> {
             Navigator.of(context).pop();
 
             // Show error message
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("Failed to get download URL"),
               duration: Duration(seconds: 2),
             ));
@@ -115,14 +110,14 @@ class _AddLecturePageState extends State<AddLecturePage> {
         Navigator.of(context).pop();
 
         // Show error message
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Failed to upload file"),
           duration: Duration(seconds: 2),
         ));
       }
     } else {
       // Show error message
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("No file selected"),
         duration: Duration(seconds: 2),
       ));
@@ -157,7 +152,7 @@ Future<String> fetchData(String message) async {
     print(url);
     if(lecturetitleController.text.isEmpty ||
       lectureDescriptionController.text.isEmpty || url!.isEmpty){
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text("Please fill in all fields and upload a file"),
       duration: Duration(seconds: 2),
     ));
@@ -183,7 +178,7 @@ Future<String> fetchData(String message) async {
       "UploadTime": Timestamp.now(), //format this later
     });
     Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text("Lecture created successfully"),
                 duration: Duration(seconds: 2),
               ));}
@@ -218,7 +213,7 @@ Future<String> fetchData(String message) async {
               backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
               foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
             ),
-            child: Text("Upload Notes"),
+            child: const Text("Upload Notes"),
             onPressed: () async {
               FilePickerResult? result = await FilePicker.platform.pickFiles();
               uploadFileToStorage(result);

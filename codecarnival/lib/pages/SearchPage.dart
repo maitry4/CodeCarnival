@@ -1,13 +1,11 @@
-import 'package:codecarnival/components/drawer.dart';
 import 'package:codecarnival/components/tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SearchPage extends StatefulWidget {
   String type;
-   SearchPage({Key? key, required this.type}) : super(key: key);
+   SearchPage({super.key, required this.type});
 
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -75,7 +73,7 @@ class _SearchPageState extends State<SearchPage> {
                 child: TextField(
                   onChanged: (value) => _runFilter(value),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search),
+                    prefixIcon: const Icon(Icons.search),
                     hintText: "Search your Classes",
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey.shade600), //0₁
@@ -94,7 +92,7 @@ class _SearchPageState extends State<SearchPage> {
                     stream: FirebaseFirestore.instance.collection("Courses").snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
+                        return const Center(
                           child: CircularProgressIndicator(),
                         );
                       }
@@ -106,7 +104,7 @@ class _SearchPageState extends State<SearchPage> {
                       }
                 
                       if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                        return Center(
+                        return const Center(
                           child: Text('No Courses available.'),
                         );
                       }
@@ -129,7 +127,7 @@ class _SearchPageState extends State<SearchPage> {
                             
                             
                           } else {
-                            return SizedBox.shrink();
+                            return const SizedBox.shrink();
                           }
                         },
                       );

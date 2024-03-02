@@ -52,7 +52,7 @@ class _MyDrawerState extends State<MyDrawer> {
     return Drawer(
         child: Column(
       children: [
-        DrawerHeader(child: Icon(Icons.person, size: 64)),
+        const DrawerHeader(child: Icon(Icons.person, size: 64)),
         Text(
           values != null ? values!['username'] : 'Loading...',
           style: TextStyle(color: text_color),
@@ -65,7 +65,7 @@ class _MyDrawerState extends State<MyDrawer> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => MyCoursePage(),
+                builder: (context) => const MyCoursePage(),
               ),
             );
           },
@@ -78,7 +78,7 @@ class _MyDrawerState extends State<MyDrawer> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => StudentMyCoursePage(),
+                builder: (context) => const StudentMyCoursePage(),
               ),
             );
           },
@@ -91,7 +91,7 @@ class _MyDrawerState extends State<MyDrawer> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AddCoursePage(),
+                builder: (context) => const AddCoursePage(),
               )
             );
           },
@@ -103,12 +103,12 @@ class _MyDrawerState extends State<MyDrawer> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Chatbot(),
+                builder: (context) => const Chatbot(),
               ),
             );
           },
         ),
-        SizedBox(
+        const SizedBox(
           height: 350,
         ),
         IconButton(onPressed: signUserOut, icon: const Icon(Icons.logout))
