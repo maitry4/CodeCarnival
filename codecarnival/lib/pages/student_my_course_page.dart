@@ -92,7 +92,7 @@ class _StudentMyCoursePageState extends State<StudentMyCoursePage> {
                   itemBuilder: (context, index) {
                     final course = myCourses[index];
                     print("username");
-                    return CoffeeTile(
+                    return ClassUi(
                       CourseName: course['CourseName'],
                       TeacherEmail: course['TeacherEmail'],
                       Date: course['Time'],

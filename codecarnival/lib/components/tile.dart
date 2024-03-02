@@ -8,14 +8,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
-class CoffeeTile extends StatefulWidget {
+class ClassUi extends StatefulWidget {
   final String CourseName;
   final String TeacherEmail;
   final String Date;
   final String ID;
   final String type;
   int LectureCount;
-  CoffeeTile({
+  ClassUi({
     super.key,
     required this.CourseName,
     required this.TeacherEmail,
@@ -26,10 +26,10 @@ class CoffeeTile extends StatefulWidget {
   });
 
   @override
-  State<CoffeeTile> createState() => _CoffeeTileState();
+  State<ClassUi> createState() => _ClassUiState();
 }
 
-class _CoffeeTileState extends State<CoffeeTile> {
+class _ClassUiState extends State<ClassUi> {
   final username = FirebaseAuth.instance.currentUser != null
       ? FirebaseAuth.instance.currentUser!.email
       : 'something';
@@ -267,14 +267,12 @@ class _CoffeeTileState extends State<CoffeeTile> {
                     },
                     text: "Create Lectures"),
               SizedBox(
-                height: 5,
+                height: 25,
               ),
               if (widget.TeacherEmail == username)
               // MyButton(onTap: deleteCourse, text: "Delete"),
-              Padding(
-                padding: const EdgeInsets.only(left:128.0),
-                child: IconButton(onPressed: deleteCourse, icon: Icon(Icons.delete, color:Color.fromARGB(255, 151, 1, 1), size: 50,)),
-              )
+              IconButton(onPressed: deleteCourse, icon: Icon(Icons.delete, color:Color.fromARGB(255, 248, 12, 12), size: 50,)),
+              
               // Text("Delete")
               
             ],

@@ -89,7 +89,7 @@ class _CourseLecutreUiState extends State<CourseLecutreUi> {
                 child: Container(
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
-                    color: const Color(0xffedeee9),
+                    // color: const Color(0xffedeee9),
                     borderRadius: BorderRadius.circular(12),
                               image: const DecorationImage(
                       image: AssetImage("lib/images/lecture_background1.jpg"),
@@ -104,7 +104,9 @@ class _CourseLecutreUiState extends State<CourseLecutreUi> {
                       Container(
                           padding: const EdgeInsets.all(8.0),
                           decoration: BoxDecoration(
+                            color: Color.fromARGB(132, 255, 255, 255),
                             border: Border.all(
+                              
                               width: 2,
                               color: const Color(0xFF014a97),
                               
@@ -123,7 +125,7 @@ class _CourseLecutreUiState extends State<CourseLecutreUi> {
                             padding: const EdgeInsets.all(8.0),
                             
                             decoration: BoxDecoration(
-                              color: const Color.fromARGB(73, 255, 255, 255),
+                              color: Color.fromARGB(132, 255, 255, 255),
                               border: Border.all(
                                 width: 2,
                                 color: const Color(0xFF014a97),

@@ -116,7 +116,7 @@ class _SearchPageState extends State<SearchPage> {
                           final course = snapshot.data!.docs[index];
                           if (_foundCourses.contains(course['CourseName'])) {
                             // print("*********");
-                            return CoffeeTile(
+                            return ClassUi(
                                   CourseName: course['CourseName'],
                                   TeacherEmail: course['TeacherEmail'],
                                   Date: course['Time'],

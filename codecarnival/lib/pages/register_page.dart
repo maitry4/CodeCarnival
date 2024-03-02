@@ -56,7 +56,7 @@ class _RegisterPageState extends State<RegisterPage> {
         // check if password is same as confirm paswword. and both of them are greater than 6 characters
         final passLen = passwordController.text.length;
         if (passwordController.text == confirmpasswordController.text &&
-            passLen >= 6) {
+            passLen >= 6 && passwordController.text.isNotEmpty && emailController.text.isNotEmpty && confirmpasswordController.text.isNotEmpty) {
           // create a user
           UserCredential userCredential = await FirebaseAuth.instance
               .createUserWithEmailAndPassword(
@@ -115,7 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
       if (error == 'invalid-credential') {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text("Class Deleted Successfully"),
+        content: Text("Invalid Id!"),
         duration: Duration(seconds: 2),
       ));
       }

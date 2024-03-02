@@ -78,7 +78,7 @@ class _MyCoursePageState extends State<MyCoursePage> {
                   itemBuilder: (context, index) {
                     // get message
                     final course = snapshot.data!.docs[index];
-                    return CoffeeTile(
+                    return ClassUi(
                       CourseName: course['CourseName'],
                       TeacherEmail: course['TeacherEmail'],
                       Date: course['Time'],

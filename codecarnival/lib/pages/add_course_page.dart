@@ -26,14 +26,10 @@ class _AddCoursePageState extends State<AddCoursePage> {
   }
   void createCourse() async {
     if (courseController.text == '') {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return const AlertDialog(
-              content: Text("Class Name Can't Be Empty!", style:TextStyle(fontSize: 20)),
-            );
-          },
-        );
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Class Name Can't Be Empty!"),
+              duration: Duration(seconds: 2),
+            ));
       return;
     }
     Timestamp date = Timestamp.now();
