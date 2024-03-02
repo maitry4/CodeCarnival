@@ -93,11 +93,23 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
     return Scaffold(
       drawer: MyDrawer(type: 'teacher'),
       appBar: AppBar(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SearchPage(type:'teacher'),
+                    ));
+        },
+        foregroundColor: Colors.white,
+        backgroundColor: Color(0xFF014a97),
+        child: const Icon(Icons.search),
+      ),
       body: Column(
         children: [
           // user details
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 13),
+            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16),
             child: Text(
               "Discover your class and join the journey today!",
               style: GoogleFonts.bebasNeue(
@@ -109,32 +121,33 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
             height: 25,
           ),
 
-          MyButton(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SearchPage(),
-                    ));
-              },
-              text: "Search"),
+          // MyButton(
+          //     onTap: () {
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => SearchPage(),
+                //     ));
+          //     },
+          //     text: "Search"),
           // Search Bar
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: TextField(
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search),
-                hintText: "Search your Classes",
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey.shade600), //0₁
-                ),
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.shade600)),
-              ),
-              onSubmitted: (string) {},
-            ),
-          ),
-          SizedBox(height: 25),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          //   child: TextField(
+          //     decoration: InputDecoration(
+          //       prefixIcon: Icon(Icons.search),
+          //       hintText: "Search your Classes",
+          //       focusedBorder: OutlineInputBorder(
+          //         borderSide: BorderSide(color: Colors.grey.shade600), //0₁
+          //       ),
+          //       enabledBorder: OutlineInputBorder(
+          //           borderSide: BorderSide(color: Colors.grey.shade600)),
+          //     ),
+          //     onSubmitted: (string) {},
+          //   ),
+          // ),
+          
+          // SizedBox(height: 5),
           Expanded(
               child: StreamBuilder(
                   stream: FirebaseFirestore.instance
@@ -176,21 +189,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                       },
                     );
                   })),
-          // ElevatedButton(
-          //     child: Text("Pick File"),
-          //     onPressed: ()async{
-          //       print("before");
-          //       FilePickerResult? result = await FilePicker.platform.pickFiles();
-          //       print("Hiii");
-          //       if (result != null) {
-          //         print("done");
-          //         File file = File(result.files.single.path!);
-          //       } else {
-          //         print("not done");
-          //         // User canceled the picker
-          //       }
-          //     },
-          //   ),
+          
         ],
       ),
     );

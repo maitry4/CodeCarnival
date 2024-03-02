@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:codecarnival/components/course_ui.dart';
 import 'package:codecarnival/components/drawer.dart';
 import 'package:codecarnival/components/tile.dart';
+import 'package:codecarnival/pages/SearchPage.dart';
 import 'package:codecarnival/pages/teacher_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,18 @@ class _StudentHomePageState extends State<StudentHomePage> {
     return Scaffold(
       drawer: MyDrawer(type:'student'),
       appBar: AppBar(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SearchPage(type:'student'),
+                    ));
+        },
+        foregroundColor: Colors.white,
+        backgroundColor: Color(0xFF014a97),
+        child: const Icon(Icons.search),
+      ),
       body: Column(
         children: [
           Padding(
@@ -73,21 +86,21 @@ class _StudentHomePageState extends State<StudentHomePage> {
             ), 
             SizedBox(height: 25,),
             // Search Bar
-         Padding(
-           padding: const EdgeInsets.symmetric(horizontal:25.0),
-           child: TextField(
-             decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              hintText: "Search your Classes",
-               focusedBorder: OutlineInputBorder(
-               borderSide: BorderSide (color: Colors.grey.shade600), //0₁
-                ), 
-               enabledBorder: OutlineInputBorder(
-               borderSide: BorderSide (color: Colors.grey.shade600)
-               ),
-               ),
-                ),
-         ),
+        //  Padding(
+        //    padding: const EdgeInsets.symmetric(horizontal:25.0),
+        //    child: TextField(
+        //      decoration: InputDecoration(
+        //       prefixIcon: Icon(Icons.search),
+        //       hintText: "Search your Classes",
+        //        focusedBorder: OutlineInputBorder(
+        //        borderSide: BorderSide (color: Colors.grey.shade600), //0₁
+        //         ), 
+        //        enabledBorder: OutlineInputBorder(
+        //        borderSide: BorderSide (color: Colors.grey.shade600)
+        //        ),
+        //        ),
+        //         ),
+        //  ),
         SizedBox(height:25),
           Expanded(
               child: StreamBuilder(

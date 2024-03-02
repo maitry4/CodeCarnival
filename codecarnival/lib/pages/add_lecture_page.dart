@@ -1,3 +1,8 @@
+import 'dart:convert';
+
+import 'package:dash_chat_2/dash_chat_2.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,20 +26,21 @@ class AddLecturePage extends StatefulWidget {
 }
 
 class _AddLecturePageState extends State<AddLecturePage> {
+  ChatUser myself = ChatUser(id: "1", firstName: "Shivangi");
+  ChatUser bot = ChatUser(id: "2", firstName: "bot");
+  List<ChatMessage> allMessages = [];
+  List<ChatUser> typing=[];
+  final ourUrl =
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyBYE0mEekGvkn_Q9m3Tm6RgJ4yRU8JqtfE";
+  final header = {'Content-Type': 'application/json'};
   final username = FirebaseAuth.instance.currentUser != null
       ? FirebaseAuth.instance.currentUser!.email
       : 'something';
   final lecturetitleController = TextEditingController();
-  final lecutreDescriptionController = TextEditingController();
+  final lectureDescriptionController = TextEditingController();
   String? url = "";
-  String reference = "";
-  void getReference() {
-    print("get reference");
-    setState(() {
-      reference = "the references that we get";
-    });
-  }
-
+  late String reference;
+  
   void uploadFileToStorage(res_file) async {
     // Show circular progress indicator
     if (res_file != null) {
@@ -124,11 +130,38 @@ class _AddLecturePageState extends State<AddLecturePage> {
     }
   }
 
-  void addLecture() {
+
+Future<String> fetchData(String message) async {
+  try {
+    var data = {
+      "contents": [
+        {"parts": [{"text": message}]}
+      ]
+    };
+    final response = await http.post(Uri.parse(ourUrl), headers: header, body: jsonEncode(data));
+    if (response.statusCode == 200) {
+      var result = jsonDecode(response.body);
+      return result["candidates"][0]["content"]['parts'][0]["text"];
+    } else {
+      print("Failed to fetch data. Error code: ${response.statusCode}");
+      return ""; // or throw an error if necessary
+    }
+  } catch (e) {
+    print("Exception occurred: $e");
+    return ""; // or throw an error if necessary
+  }
+}
+
+
+  void addLecture() async {
     print("Inside addLecture: ");
     print(url);
-    getReference();
-    // write comment to the firestore
+    
+    final res= await fetchData("Can you provide 3 reference websites for this lecture?Title: ${lecturetitleController.text} Description: ${lectureDescriptionController.text}Provide them in this format: FORMAT: 1. <URL> in new line 2. <URL> in new line 3. <URL>");
+    print("****");
+    print(lecturetitleController.text);
+    print(lectureDescriptionController.text);
+
     FirebaseFirestore.instance
         .collection("Courses")
         .doc(widget.ID)
@@ -136,22 +169,11 @@ class _AddLecturePageState extends State<AddLecturePage> {
         .add({
       "LectureTitle": lecturetitleController.text,
       "CreatedBy": username,
-      "Description": lecutreDescriptionController.text,
+      "Description": lectureDescriptionController.text,
       "Doubts": {},
       "FileURL": url,
-      "Reference": reference,
+      "Reference": res,
       "UploadTime": Timestamp.now(), //format this later
-    });
-    // update the comment count
-    print(widget.LectureCount);
-    int newCount = widget.LectureCount + 1;
-    FirebaseFirestore.instance
-        .collection("Users")
-        .doc(username)
-        .update({'LectureCount': newCount});
-
-    setState(() {
-      widget.LectureCount = newCount;
     });
   }
 
@@ -172,7 +194,7 @@ class _AddLecturePageState extends State<AddLecturePage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: MyTextField(
-                controller: lecutreDescriptionController,
+                controller: lectureDescriptionController,
                 hintText: "Provide a meaningful Lecture Description",
                 obscureText: false),
           ),
@@ -197,8 +219,8 @@ class _AddLecturePageState extends State<AddLecturePage> {
             onTap: () {
               addLecture();
               // clear the controller
-              lecturetitleController.clear();
-              lecutreDescriptionController.clear();
+              // lecturetitleController.clear();
+              // lectureDescriptionController.clear();
               // pop the box
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(

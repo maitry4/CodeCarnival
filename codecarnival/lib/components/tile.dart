@@ -37,6 +37,11 @@ class _CoffeeTileState extends State<CoffeeTile> {
   String reference = "";
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   // To delete an existing course
   void deleteCourse() {
     // Show circular progress indicator
@@ -262,8 +267,16 @@ class _CoffeeTileState extends State<CoffeeTile> {
                     },
                     text: "Create Lectures"),
               SizedBox(
-                height: 60,
+                height: 5,
               ),
+              if (widget.TeacherEmail == username)
+              // MyButton(onTap: deleteCourse, text: "Delete"),
+              Padding(
+                padding: const EdgeInsets.only(left:128.0),
+                child: IconButton(onPressed: deleteCourse, icon: Icon(Icons.delete, color:Color.fromARGB(255, 151, 1, 1), size: 50,)),
+              )
+              // Text("Delete")
+              
             ],
           ),
         ));

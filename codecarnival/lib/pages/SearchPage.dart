@@ -1,101 +1,150 @@
+import 'package:codecarnival/components/drawer.dart';
+import 'package:codecarnival/components/tile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+  String type;
+   SearchPage({Key? key, required this.type}) : super(key: key);
 
   @override
   _SearchPageState createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final List<Map<String, dynamic>> _allUsers = [
-    {"id": 1, "name": "Andy", "age": 29},
-    {"id": 2, "name": "Aragon", "age": 40},
-    {"id": 3, "name": "Bob", "age": 5},
-    {"id": 4, "name": "Barbara", "age": 35},
-    {"id": 5, "name": "Candy", "age": 21},
-    {"id": 6, "name": "Colin", "age": 55},
-    {"id": 7, "name": "Audra", "age": 30},
-    {"id": 8, "name": "Banana", "age": 14},
-    {"id": 9, "name": "Caversky", "age": 100},
-    {"id": 10, "name": "Becky", "age": 32},
-  ];
+  List<String> _courseNames = [];
+  List<String> _foundCourses = [];
+  // String type = "";
+  final username = FirebaseAuth.instance.currentUser != null
+      ? FirebaseAuth.instance.currentUser!.email
+      : 'something';
 
-  // This list holds the data for the list view
-  List<Map<String, dynamic>> _foundUsers = [];
   @override
-  initState() {
-    _foundUsers = _allUsers;
+  void initState() {
     super.initState();
+    print("here");
+    fetchCourseNames();
   }
 
-  // This function is called whenever the text field changes
+  Future<void> fetchCourseNames() async {
+    final coursesRef = FirebaseFirestore.instance.collection('Courses');
+    final querySnapshot = await coursesRef.get();
+    final courseNames = querySnapshot.docs.map((doc) => doc['CourseName'] as String).toList();
+
+    // final userRef = FirebaseFirestore.instance.collection("Users").doc(username);
+    // final querySnapshot2 = await userRef.get();
+    // final x = querySnapshot2.data()!['Role'];
+    setState(() {
+      // type = x;
+      _courseNames = courseNames;
+      _foundCourses = courseNames;
+    });
+  }
+
   void _runFilter(String enteredKeyword) {
-    List<Map<String, dynamic>> results = [];
+    List<String> results = [];
     if (enteredKeyword.isEmpty) {
-      // if the search field is empty or only contains white-space, we'll display all users
-      results = _allUsers;
+      results = _courseNames;
     } else {
-      results = _allUsers
-          .where((user) =>
-              user["name"].toLowerCase().contains(enteredKeyword.toLowerCase()))
+      results = _courseNames
+          .where((course) => course.toLowerCase().contains(enteredKeyword.toLowerCase()))
           .toList();
-      // we use the toLowerCase() method to make it case-insensitive
     }
     setState(() {
-      _foundUsers = results;
+      _foundCourses = results;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Search Listview'),
-      ),
+      // drawer: MyDrawer(type: type),
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
+          //   Padding(
+          //   padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 13),
+          //   child: Text(
+          //     "Discover your class and join the journey today!",
+          //     style: GoogleFonts.bebasNeue(
+          //       fontSize: 47,
+          //     ),
+          //   ),
+          // ),
             const SizedBox(
-              height: 20,
+              height: 15,
             ),
-            TextField(
-              onChanged: (value) => _runFilter(value),
-              decoration: const InputDecoration(
-                  labelText: 'Search', suffixIcon: Icon(Icons.search)),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                onChanged: (value) => _runFilter(value),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.search),
+                  hintText: "Search your Classes",
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade600), //0₁
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade600)),
+                ),
+              ),
             ),
             const SizedBox(
-              height: 20,
+              height: 73,
             ),
-            Expanded(
-              child: _foundUsers.isNotEmpty
-                  ? ListView.builder(
-                      itemCount: _foundUsers.length,
-                      itemBuilder: (context, index) => Card(
-                        key: ValueKey(_foundUsers[index]["id"]), //one change
-                        color: Colors.blue,
-                        elevation: 4,
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        child: ListTile(
-                          leading: Text(
-                            _foundUsers[index]["id"].toString(),
-                            style: const TextStyle(
-                                fontSize: 24, color: Colors.white),
-                          ),
-                          title: Text(_foundUsers[index]['name'],
-                              style: TextStyle(color: Colors.white)),
-                          subtitle: Text(
-                              '${_foundUsers[index]["age"].toString()} years old',
-                              style: TextStyle(color: Colors.white)),
-                        ),
-                      ),
-                    )
-                  : const Text(
-                      'No results found',
-                      style: TextStyle(fontSize: 24),
-                    ),
+            SizedBox(
+              height: 500,
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance.collection("Courses").snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+              
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Error: ${snapshot.error}'),
+                      );
+                    }
+              
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      return Center(
+                        child: Text('No Courses available.'),
+                      );
+                    }
+              
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        final course = snapshot.data!.docs[index];
+                        if (_foundCourses.contains(course['CourseName'])) {
+                          // print("*********");
+                          return CoffeeTile(
+                                CourseName: course['CourseName'],
+                                TeacherEmail: course['TeacherEmail'],
+                                Date: course['Time'],
+                                ID: course.id,
+                                LectureCount: 0,
+                                type: widget.type,
+                              );
+                          
+                          
+                        } else {
+                          return SizedBox.shrink();
+                        }
+                      },
+                    );
+                  },
+                ),
             ),
+            
           ],
         ),
       ),

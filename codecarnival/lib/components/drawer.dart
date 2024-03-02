@@ -92,7 +92,7 @@ class _MyDrawerState extends State<MyDrawer> {
               context,
               MaterialPageRoute(
                 builder: (context) => AddCoursePage(),
-              ),
+              )
             );
           },
         ),
