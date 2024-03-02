@@ -39,7 +39,6 @@ class _AddLecturePageState extends State<AddLecturePage> {
   final lecturetitleController = TextEditingController();
   final lectureDescriptionController = TextEditingController();
   String? url = "";
-  late String reference;
   
   void uploadFileToStorage(res_file) async {
     // Show circular progress indicator

@@ -20,7 +20,7 @@ class MyTextField extends StatelessWidget {
         controller: controller,
         obscureText: obscureText,
         decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search),
+              // prefixIcon: Icon(Icons.search),
               hintText: hintText,
                focusedBorder: OutlineInputBorder(
                borderSide: BorderSide (color: Color(0xfff8b30d)), //0₁

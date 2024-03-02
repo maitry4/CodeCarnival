@@ -64,88 +64,81 @@ class _SearchPageState extends State<SearchPage> {
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-          //   Padding(
-          //   padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 13),
-          //   child: Text(
-          //     "Discover your class and join the journey today!",
-          //     style: GoogleFonts.bebasNeue(
-          //       fontSize: 47,
-          //     ),
-          //   ),
-          // ),
-            const SizedBox(
-              height: 15,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                onChanged: (value) => _runFilter(value),
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  hintText: "Search your Classes",
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.shade600), //0₁
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  onChanged: (value) => _runFilter(value),
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    hintText: "Search your Classes",
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade600), //0₁
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey.shade600)),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey.shade600)),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 73,
-            ),
-            SizedBox(
-              height: 500,
-              child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance.collection("Courses").snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
+              const SizedBox(
+                height: 73,
+              ),
+              SizedBox(
+                height: 500,
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance.collection("Courses").snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text('Error: ${snapshot.error}'),
+                        );
+                      }
+                
+                      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                        return Center(
+                          child: Text('No Courses available.'),
+                        );
+                      }
+                
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          final course = snapshot.data!.docs[index];
+                          if (_foundCourses.contains(course['CourseName'])) {
+                            // print("*********");
+                            return CoffeeTile(
+                                  CourseName: course['CourseName'],
+                                  TeacherEmail: course['TeacherEmail'],
+                                  Date: course['Time'],
+                                  ID: course.id,
+                                  LectureCount: 0,
+                                  type: widget.type,
+                                );
+                            
+                            
+                          } else {
+                            return SizedBox.shrink();
+                          }
+                        },
                       );
-                    }
+                    },
+                  ),
+              ),
               
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text('Error: ${snapshot.error}'),
-                      );
-                    }
-              
-                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                      return Center(
-                        child: Text('No Courses available.'),
-                      );
-                    }
-              
-                    return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        final course = snapshot.data!.docs[index];
-                        if (_foundCourses.contains(course['CourseName'])) {
-                          // print("*********");
-                          return CoffeeTile(
-                                CourseName: course['CourseName'],
-                                TeacherEmail: course['TeacherEmail'],
-                                Date: course['Time'],
-                                ID: course.id,
-                                LectureCount: 0,
-                                type: widget.type,
-                              );
-                          
-                          
-                        } else {
-                          return SizedBox.shrink();
-                        }
-                      },
-                    );
-                  },
-                ),
-            ),
-            
-          ],
+            ],
+          ),
         ),
       ),
     );
