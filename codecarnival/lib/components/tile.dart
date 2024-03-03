@@ -1,9 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:codecarnival/components/course_lectures_ui.dart';
 import 'package:codecarnival/components/my_button.dart';
 import 'package:codecarnival/pages/add_lecture_page.dart';
+import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -37,11 +41,46 @@ class _ClassUiState extends State<ClassUi> {
   String reference = "";
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
+  ChatUser myself = ChatUser(id: "1", firstName: "Shivangi");
+  ChatUser bot = ChatUser(id: "2", firstName: "bot");
+  List<ChatMessage> allMessages = [];
+  List<ChatUser> typing = [];
+  final ourUrl =
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyBYE0mEekGvkn_Q9m3Tm6RgJ4yRU8JqtfE";
+  final header = {'Content-Type': 'application/json'};
+
+  Future<String> fetchData(String message) async {
+    try {
+      var data = {
+        "contents": [
+          {
+            "parts": [
+              {"text": message}
+            ]
+          }
+        ]
+      };
+      final response = await http.post(Uri.parse(ourUrl),
+          headers: header, body: jsonEncode(data));
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        return result["candidates"][0]["content"]['parts'][0]["text"];
+      } else {
+        print("Failed to fetch data. Error code: ${response.statusCode}");
+        return ""; // or throw an error if necessary
+      }
+    } catch (e) {
+      print("Exception occurred: $e");
+      return ""; // or throw an error if necessary
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
+
   // To delete an existing course
   void deleteCourse() {
     // Show circular progress indicator
@@ -95,26 +134,6 @@ class _ClassUiState extends State<ClassUi> {
           .collection("Courses")
           .doc(widget.ID)
           .delete();
-
-      // Remove the course from all enrolled users' "Courses" array
-      // await FirebaseFirestore.instance.runTransaction((transaction) async {
-      // Delete the course document
-      // await transaction.delete(FirebaseFirestore.instance.collection("Courses").doc(widget.ID));
-
-      // Remove the course from all enrolled users' "Courses" array
-      // final username = FirebaseAuth.instance.currentUser != null
-      //     ? FirebaseAuth.instance.currentUser!.email
-      //     : 'something';
-      // final userDoc = FirebaseFirestore.instance.collection("Users").doc(username);
-      // final userSnap = await transaction.get(userDoc);
-      // if (userSnap.exists) {
-      //   List<dynamic> courses = userSnap.get("Courses") ?? [];
-      //   if (courses.contains(widget.ID)) {
-      //     courses.remove(widget.ID);
-      //     await transaction.update(userDoc, {"Courses": courses});
-      //   }
-      // }
-      // });
 
       // Dismiss the dialog
     });
@@ -199,10 +218,9 @@ class _ClassUiState extends State<ClassUi> {
             borderRadius: BorderRadius.circular(12),
             color: Colors.grey[400],
             image: DecorationImage(
-            image: AssetImage("lib/images/background_img.jpg"),
-            fit: BoxFit.cover,
-          ),
-
+              image: AssetImage("lib/images/background_img.jpg"),
+              fit: BoxFit.cover,
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -242,7 +260,38 @@ class _ClassUiState extends State<ClassUi> {
                     if (snapshot.hasData) {
                       if (snapshot.data!) {
                         // User is enrolled, show unenroll button
-                        return MyButton(onTap: enrollInClass, text: "Unenroll");
+                        return Column(
+                          children: [
+                            MyButton(onTap: enrollInClass, text: "Unenroll"),
+                            SizedBox(height: 20,),
+                            MyButton(
+                                onTap: () {
+                              
+                                      showDialog(context: context, builder: (context) {
+      
+        return AlertDialog(title: FutureBuilder<String>(
+                              future: fetchData(
+                                  'Provide a simple question related to ${widget.CourseName}'), // Call fetchData here
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(child: Container(child: const CircularProgressIndicator())); // Return loading indicator while fetching data
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  // If data is fetched successfully, display it
+                                  return Text(snapshot.data ??
+                                      ''); // Display fetched data
+                                }
+                              },
+                            ));
+      
+    });
+                                      // print(res);
+                                },
+                                text: "Drill"),
+                          ],
+                        );
                       } else {
                         // User is not enrolled, show enroll button
                         return MyButton(
@@ -270,11 +319,16 @@ class _ClassUiState extends State<ClassUi> {
                 height: 25,
               ),
               if (widget.TeacherEmail == username)
-              // MyButton(onTap: deleteCourse, text: "Delete"),
-              IconButton(onPressed: deleteCourse, icon: Icon(Icons.delete, color:Color.fromARGB(255, 248, 12, 12), size: 50,)),
-              
+                // MyButton(onTap: deleteCourse, text: "Delete"),
+                IconButton(
+                    onPressed: deleteCourse,
+                    icon: Icon(
+                      Icons.delete,
+                      color: Color.fromARGB(255, 248, 12, 12),
+                      size: 50,
+                    )),
+
               // Text("Delete")
-              
             ],
           ),
         ));
