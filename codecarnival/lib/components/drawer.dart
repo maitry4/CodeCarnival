@@ -4,6 +4,7 @@ import 'package:codecarnival/pages/ChatBot.dart';
 import 'package:codecarnival/pages/add_course_page.dart';
 import 'package:codecarnival/pages/my_course_page.dart';
 import 'package:codecarnival/pages/student_my_course_page.dart';
+import 'package:codecarnival/quiz/quiz_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -108,8 +109,21 @@ class _MyDrawerState extends State<MyDrawer> {
             );
           },
         ),
+        if(widget.type=='student')
+        MyListTile(
+          icon: Icons.quiz,
+          text: 'Quiz',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const QuizScreen(),
+              ),
+            );
+          },
+        ),
         const SizedBox(
-          height: 350,
+          height: 300,
         ),
         IconButton(onPressed: signUserOut, icon: const Icon(Icons.logout))
       ],

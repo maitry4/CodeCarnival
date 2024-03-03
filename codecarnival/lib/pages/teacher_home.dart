@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:codecarnival/components/drawer.dart';
 import 'package:codecarnival/components/tile.dart';
+import 'package:codecarnival/models/questions.dart';
 import 'package:codecarnival/pages/SearchPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +64,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    // Questions();
     getData();
   }
 
